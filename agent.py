@@ -44,7 +44,7 @@ AGENT_CWD = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".agent")
 SETTING_SOURCES = ["project"]
 
 THINKING = {"type": "enabled", "budget_tokens": 200}
-EFFORT = "medium"
+EFFORT = "low"
 OUTPUT_FORMAT = None
 MODEL = "sonnet"
 FALLBACK_MODEL = "haiku"
