@@ -31,8 +31,7 @@ def get_options() -> ClaudeAgentOptions:
         system_prompt="Read /task/instruction.md+files/*→write+run 1 py3 script→/task/output/.",
         tools={"type": "preset", "preset": "claude_code"},
         cwd=os.path.join(os.path.dirname(os.path.abspath(__file__)), ".agent"),
-        effort="low", model=MODEL, fallback_model="haiku",
-        max_turns=1, max_budget_usd=1.0,
+        effort="low", model=MODEL, max_turns=1, max_budget_usd=1.0,
         permission_mode="bypassPermissions",
     )
 
