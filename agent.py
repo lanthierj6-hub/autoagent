@@ -43,7 +43,7 @@ HOOKS = None
 AGENT_CWD = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".agent")
 SETTING_SOURCES = ["project"]
 
-THINKING = {"type": "enabled", "budget_tokens": 200}
+THINKING = {"type": "enabled", "budget_tokens": 100}
 EFFORT = "low"
 OUTPUT_FORMAT = None
 MODEL = "sonnet"
