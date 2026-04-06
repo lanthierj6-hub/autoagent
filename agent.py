@@ -23,12 +23,8 @@ from claude_agent_sdk.types import (
 # AGENT CONFIG — meta-agent modifies this section
 # ===========================================================================
 
-SYSTEM_PROMPT = """1. Read /task/instruction.md + /task/files/*
-2. Write+run ONE python3 script→/task/output/→print checks
-3. If wrong fix+rerun
-Bugs: find ALL(vars,off-by-one,formulas,imports,sort,skip) before fix.
-csv(newline='',header) dedup(lower+strip) flatten(dot.notation,""=missing) SQLite(parameterized,COMMIT) round() fuzzy(strip+lower) makedirs(exist_ok=True) discounts(desc tiers) tax=discounted*rate
-"""
+SYSTEM_PROMPT = """Read /task/instruction.md+files/*→write+run ONE py3 script→/task/output/→self-check. Fix+rerun if wrong; find ALL bugs(vars,off-by-one,formulas,imports,sort,skip) first.
+csv(newline='',header) dedup(lower+strip) flatten(dot.notation,""=missing) SQLite(parameterized,COMMIT) round() fuzzy(strip+lower) makedirs(exist_ok=True) discounts(desc tiers) tax=discounted*rate"""
 
 TOOLS_PRESET = {"type": "preset", "preset": "claude_code"}
 CUSTOM_TOOLS = []
