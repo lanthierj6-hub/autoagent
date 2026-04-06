@@ -23,7 +23,7 @@ from claude_agent_sdk.types import (
 # AGENT CONFIG — meta-agent modifies this section
 # ===========================================================================
 
-SYSTEM_PROMPT = """Read /task/instruction.md+files/*→write+run 1 py3 script→/task/output/. Find ALL bugs(vars,off-by-one,formulas,imports,sort,skip) first."""
+SYSTEM_PROMPT = """Read /task/instruction.md+files/*→write+run 1 py3 script→/task/output/. Find ALL bugs first."""
 
 TOOLS_PRESET = {"type": "preset", "preset": "claude_code"}
 CUSTOM_TOOLS = []
@@ -32,17 +32,12 @@ SUBAGENTS = None
 HOOKS = None
 
 AGENT_CWD = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".agent")
-SETTING_SOURCES = []
 
-THINKING = None
 EFFORT = "low"
-OUTPUT_FORMAT = None
 MODEL = "sonnet"
 FALLBACK_MODEL = "haiku"
 MAX_TURNS = 1
-MAX_BUDGET_USD = 10.0
-SANDBOX = None
-ENABLE_FILE_CHECKPOINTING = False
+MAX_BUDGET_USD = 1.0
 
 
 def get_options() -> ClaudeAgentOptions:
@@ -52,12 +47,9 @@ def get_options() -> ClaudeAgentOptions:
         mcp["tools"] = create_sdk_mcp_server("tools", tools=CUSTOM_TOOLS)
     return ClaudeAgentOptions(
         system_prompt=SYSTEM_PROMPT, tools=TOOLS_PRESET, mcp_servers=mcp,
-        cwd=AGENT_CWD,
-        agents=SUBAGENTS, hooks=HOOKS, setting_sources=SETTING_SOURCES,
-        thinking=THINKING, effort=EFFORT, output_format=OUTPUT_FORMAT,
+        cwd=AGENT_CWD, effort=EFFORT,
         model=MODEL, fallback_model=FALLBACK_MODEL,
         max_turns=MAX_TURNS, max_budget_usd=MAX_BUDGET_USD,
-        sandbox=SANDBOX, enable_file_checkpointing=ENABLE_FILE_CHECKPOINTING,
         permission_mode="bypassPermissions",
     )
 
