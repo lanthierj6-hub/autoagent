@@ -8,7 +8,7 @@
   {"date": "2026-03-08", "product": "Floor Primer", "region": "QC-12", "qty": 8, "price": 32.50},
   {"date": "2026-03-10", "product": "Epoxy Standard", "region": "QC-06", "qty": 4, "price": 89.99},
   {"date": "2026-03-12", "product": "Concrete Sealer", "region": "QC-05", "qty": 6, "price": 45.00},
-  {"date": "2026-03-14", "product": "Epoxy Premium", "region": "QC-03", "qty": 0, "price": 199.99},
+  {"date": "2026-03-14", "product": "Epoxy Premium", "region": "QC-03", "qty": 3, "price": 199.99},
   {"date": "2026-03-15", "product": "Metallic Epoxy", "region": "QC-06", "qty": 1, "price": 299.00},
   {"date": "2026-03-17", "product": "Floor Primer", "region": "QC-12", "qty": 12, "price": 32.50},
   {"date": "2026-03-19", "product": "Polyurea Coating", "region": "QC-03", "qty": 5, "price": 149.50},
