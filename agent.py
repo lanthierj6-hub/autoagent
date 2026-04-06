@@ -23,28 +23,26 @@ from claude_agent_sdk.types import (
 # AGENT CONFIG — meta-agent modifies this section
 # ===========================================================================
 
-SYSTEM_PROMPT = """You are an AGI-class autonomous agent. Solve tasks with maximum efficiency and minimum tool calls.
+SYSTEM_PROMPT = """Autonomous agent. Solve tasks with minimum tool calls.
 
 ## Protocol
-1. Read /task/instruction.md — note every required output file and format.
-2. List /task/files/, then read ALL inputs in one batch.
-3. Write ONE python3 script via Bash that: reads inputs, processes, writes ALL outputs to /task/output/, and SELF-VERIFIES (prints row counts, checksums, sample values at the end).
-4. If self-verification shows errors, fix and rerun. Otherwise STOP immediately.
+1. Read /task/instruction.md — note every output file, format, and sort order.
+2. Read ALL input files from /task/files/ in one batch.
+3. Write ONE python3 script via Bash that reads inputs, processes, writes ALL outputs to /task/output/, and prints verification (row counts, sample values).
+4. If verification fails, fix and rerun. Otherwise STOP.
 
 ## Bug-Fixing Tasks
-1. Read the broken script and input data — find ALL bugs before fixing.
-2. Common: wrong var names, off-by-one, add-then-check vs check-then-add, wrong formulas, missing imports, wrong sort keys.
-3. Fix ALL bugs in one pass. Run the fixed script. Verify output.
+1. Read broken script + input data. Find ALL bugs before fixing.
+2. Common bugs: wrong var names, off-by-one, add-then-check vs check-then-add, wrong formulas, missing imports, wrong sort keys, skip-first-record.
+3. Fix ALL bugs in one pass. Run fixed script. Verify output matches spec.
 
 ## Data Rules
-- CSV: csv module, newline='', always include header.
-- Dedup: normalize keys (lowercase, strip) BEFORE comparing.
+- CSV: csv module, newline='', header row. Dedup: lowercase+strip keys first.
 - JSON flatten: dot notation (parent.child). Missing → empty string.
-- SQLite: parameterized queries, COMMIT.
-- Sort: case-insensitive, preserve original values.
-- Numbers: round() explicitly.
-- Fuzzy match: strip + lowercase for joins.
-- os.makedirs('/task/output', exist_ok=True) first.
+- SQLite: parameterized queries, COMMIT. Sort: case-insensitive.
+- Numbers: round() explicitly. Fuzzy joins: strip+lowercase.
+- os.makedirs('/task/output', exist_ok=True) always.
+- Discount tiers: apply highest matching (check descending). Tax on DISCOUNTED subtotal.
 """
 
 TOOLS_PRESET = {"type": "preset", "preset": "claude_code"}
@@ -56,12 +54,12 @@ HOOKS = None
 AGENT_CWD = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".agent")
 SETTING_SOURCES = ["project"]
 
-THINKING = {"type": "enabled", "budget_tokens": 8000}
+THINKING = {"type": "enabled", "budget_tokens": 6000}
 EFFORT = "high"
 OUTPUT_FORMAT = None
 MODEL = "sonnet"
 FALLBACK_MODEL = "haiku"
-MAX_TURNS = 10
+MAX_TURNS = 8
 MAX_BUDGET_USD = 10.0
 SANDBOX = None
 ENABLE_FILE_CHECKPOINTING = False
