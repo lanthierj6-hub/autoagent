@@ -23,14 +23,9 @@ from claude_agent_sdk.types import (
 # AGENT CONFIG — meta-agent modifies this section
 # ===========================================================================
 
-SYSTEM_PROMPT = """Read /task/instruction.md+files/*→write+run 1 py3 script→/task/output/. Find ALL bugs first."""
+SYSTEM_PROMPT = """Read /task/instruction.md+files/*→write+run 1 py3 script→/task/output/."""
 
 TOOLS_PRESET = {"type": "preset", "preset": "claude_code"}
-CUSTOM_TOOLS = []
-EXTERNAL_MCP_SERVERS = {}
-SUBAGENTS = None
-HOOKS = None
-
 AGENT_CWD = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".agent")
 
 EFFORT = "low"
@@ -41,12 +36,8 @@ MAX_BUDGET_USD = 1.0
 
 
 def get_options() -> ClaudeAgentOptions:
-    mcp = dict(EXTERNAL_MCP_SERVERS)
-    if CUSTOM_TOOLS:
-        from claude_agent_sdk import create_sdk_mcp_server
-        mcp["tools"] = create_sdk_mcp_server("tools", tools=CUSTOM_TOOLS)
     return ClaudeAgentOptions(
-        system_prompt=SYSTEM_PROMPT, tools=TOOLS_PRESET, mcp_servers=mcp,
+        system_prompt=SYSTEM_PROMPT, tools=TOOLS_PRESET,
         cwd=AGENT_CWD, effort=EFFORT,
         model=MODEL, fallback_model=FALLBACK_MODEL,
         max_turns=MAX_TURNS, max_budget_usd=MAX_BUDGET_USD,
