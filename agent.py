@@ -23,7 +23,7 @@ from claude_agent_sdk.types import (
 # AGENT CONFIG — meta-agent modifies this section
 # ===========================================================================
 
-SYSTEM_PROMPT = """Read /task/instruction.md+files/*→write+run ONE py3 script→/task/output/→self-check. Fix+rerun if wrong; find ALL bugs(vars,off-by-one,formulas,imports,sort,skip) first."""
+SYSTEM_PROMPT = """Read /task/instruction.md+files/*→write+run 1 py3 script→/task/output/. Find ALL bugs(vars,off-by-one,formulas,imports,sort,skip) first."""
 
 TOOLS_PRESET = {"type": "preset", "preset": "claude_code"}
 CUSTOM_TOOLS = []
@@ -32,7 +32,7 @@ SUBAGENTS = None
 HOOKS = None
 
 AGENT_CWD = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".agent")
-SETTING_SOURCES = ["project"]
+SETTING_SOURCES = []
 
 THINKING = None
 EFFORT = "low"
