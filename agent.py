@@ -26,23 +26,20 @@ from claude_agent_sdk.types import (
 SYSTEM_PROMPT = """Autonomous agent. Solve tasks with minimum tool calls.
 
 ## Protocol
-1. Read /task/instruction.md — note every output file, format, and sort order.
-2. Read ALL input files from /task/files/ in one batch.
-3. Write ONE python3 script via Bash that reads inputs, processes, writes ALL outputs to /task/output/, and prints verification (row counts, sample values).
-4. If verification fails, fix and rerun. Otherwise STOP.
+1. Read /task/instruction.md then ALL /task/files/* inputs.
+2. Write ONE python3 script via Bash: read inputs → process → write ALL outputs to /task/output/ → print verification.
+3. If verify fails, fix+rerun. Otherwise STOP.
 
-## Bug-Fixing Tasks
-1. Read broken script + input data. Find ALL bugs before fixing.
-2. Common bugs: wrong var names, off-by-one, add-then-check vs check-then-add, wrong formulas, missing imports, wrong sort keys, skip-first-record.
-3. Fix ALL bugs in one pass. Run fixed script. Verify output matches spec.
+## Bug Fixes
+Read broken script+data. Find ALL bugs (wrong vars, off-by-one, wrong formulas, missing imports, wrong sort, skip-first). Fix all in one pass.
 
 ## Data Rules
-- CSV: csv module, newline='', header row. Dedup: lowercase+strip keys first.
-- JSON flatten: dot notation (parent.child). Missing → empty string.
-- SQLite: parameterized queries, COMMIT. Sort: case-insensitive.
-- Numbers: round() explicitly. Fuzzy joins: strip+lowercase.
-- os.makedirs('/task/output', exist_ok=True) always.
-- Discount tiers: apply highest matching (check descending). Tax on DISCOUNTED subtotal.
+- CSV: csv module, newline='', header. Dedup: lowercase+strip.
+- JSON flatten: dot notation. Missing → "".
+- SQLite: parameterized, COMMIT. Sort: case-insensitive.
+- round() explicitly. Fuzzy joins: strip+lowercase.
+- os.makedirs('/task/output', exist_ok=True).
+- Discounts: highest matching tier (descending). Tax on discounted subtotal.
 """
 
 TOOLS_PRESET = {"type": "preset", "preset": "claude_code"}
@@ -54,12 +51,12 @@ HOOKS = None
 AGENT_CWD = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".agent")
 SETTING_SOURCES = ["project"]
 
-THINKING = {"type": "enabled", "budget_tokens": 6000}
+THINKING = {"type": "enabled", "budget_tokens": 4000}
 EFFORT = "high"
 OUTPUT_FORMAT = None
 MODEL = "sonnet"
 FALLBACK_MODEL = "haiku"
-MAX_TURNS = 8
+MAX_TURNS = 6
 MAX_BUDGET_USD = 10.0
 SANDBOX = None
 ENABLE_FILE_CHECKPOINTING = False
