@@ -1,0 +1,8 @@
+commit	avg_score	passed	task_scores	cost_usd	status	description
+baseline	1.0	3/3	csv-lead-dedup=1.0,json-to-csv=1.0,sqlite-pipeline=1.0	0.00	pass	Unmodified agent.py baseline - all tasks pass
+iter2-verify	1.0	3/3	csv-lead-dedup=1.0,json-to-csv=1.0,sqlite-pipeline=1.0	0.00	pass	Added Verification Protocol + Output Paths to SYSTEM_PROMPT
+iter3-data	1.0	3/3	csv-lead-dedup=1.0,json-to-csv=1.0,sqlite-pipeline=1.0	0.00	pass	Added Data Engineering Best Practices to SYSTEM_PROMPT
+iter4-protocol	1.0	3/3	csv-lead-dedup=1.0,json-to-csv=1.0,sqlite-pipeline=1.0	0.00	pass	Improved Core Protocol: inspect inputs + plan + single-script execution
+iter1-7tasks	1.0	7/7	csv-lead-dedup=1.0,json-to-csv=1.0,sqlite-pipeline=1.0,regex-phone-extract=1.0,multi-step-pipeline=1.0,error-recovery-etl=1.0,api-mock-dashboard=1.0	0.00	pass	All 7 tasks pass (4 new hard tasks added) with current agent.py
+iter1-efficient	1.0	7/7	csv-lead-dedup=1.0,json-to-csv=1.0,sqlite-pipeline=1.0,regex-phone-extract=1.0,multi-step-pipeline=1.0,error-recovery-etl=1.0,api-mock-dashboard=1.0	0.00	pass	Tighter prompt (removed Self-Improvement fluff, added bug-fix + fuzzy-match guidance), MAX_TURNS 200->50
+iter2-efficiency	1.0	7/7	csv-lead-dedup=1.0,json-to-csv=1.0,sqlite-pipeline=1.0,regex-phone-extract=1.0,multi-step-pipeline=1.0,error-recovery-etl=1.0,api-mock-dashboard=1.0	0.00	pass	Efficiency: thinking 128K->32K, MAX_TURNS 50->30, checkpointing off, shorter prompt with STOP-when-correct
