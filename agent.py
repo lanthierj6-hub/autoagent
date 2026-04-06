@@ -23,24 +23,16 @@ from claude_agent_sdk.types import (
 # AGENT CONFIG — meta-agent modifies this section
 # ===========================================================================
 
-SYSTEM_PROMPT = """Read /task/instruction.md+files/*→write+run 1 py3 script→/task/output/."""
-
-TOOLS_PRESET = {"type": "preset", "preset": "claude_code"}
-AGENT_CWD = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".agent")
-
-EFFORT = "low"
 MODEL = "sonnet"
-FALLBACK_MODEL = "haiku"
-MAX_TURNS = 1
-MAX_BUDGET_USD = 1.0
 
 
 def get_options() -> ClaudeAgentOptions:
     return ClaudeAgentOptions(
-        system_prompt=SYSTEM_PROMPT, tools=TOOLS_PRESET,
-        cwd=AGENT_CWD, effort=EFFORT,
-        model=MODEL, fallback_model=FALLBACK_MODEL,
-        max_turns=MAX_TURNS, max_budget_usd=MAX_BUDGET_USD,
+        system_prompt="Read /task/instruction.md+files/*→write+run 1 py3 script→/task/output/.",
+        tools={"type": "preset", "preset": "claude_code"},
+        cwd=os.path.join(os.path.dirname(os.path.abspath(__file__)), ".agent"),
+        effort="low", model=MODEL, fallback_model="haiku",
+        max_turns=1, max_budget_usd=1.0,
         permission_mode="bypassPermissions",
     )
 
