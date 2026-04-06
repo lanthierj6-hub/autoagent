@@ -15,9 +15,11 @@ environment, and must produce the correct final artifact or system state.
 
 Evaluation is done by task-specific verifiers.
 
-Model is **Sonnet** (claude-sonnet-4-6) with 128K thinking tokens. Haiku as fallback.
+Model is **Opus** (claude-opus-4-6) with 128K thinking tokens. SUPERGOD MODE.
 Extended thinking is MAXED OUT. The agent thinks deeply before acting.
 Budget cap: $10 USD per task run to prevent runaway costs.
+The current task suite includes adversarial, multi-file, and reasoning-heavy tasks
+designed to challenge even the most capable models.
 
 ## Setup
 

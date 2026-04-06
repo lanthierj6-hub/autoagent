@@ -1,0 +1,10 @@
+[
+  {"name": "Pierre Lavoie", "email": "pierre@lavoie.ca", "company": "Lavoie Construction", "title": "Owner", "region": "QC-03", "budget": 15000, "interest_level": 9, "source": "referral"},
+  {"name": "Marie Tremblay", "email": "marie@tremblay.ca", "company": "Tremblay Surfaces", "title": "Manager", "region": "QC-12", "budget": 8000, "interest_level": 7, "source": "website"},
+  {"name": "Jean Gagnon", "email": "jean@gagnon.ca", "company": "Gagnon Masonry", "title": "President", "region": "QC-05", "budget": 25000, "interest_level": 8, "source": "trade_show"},
+  {"name": "Sophie Roy", "email": "sophie@roy.ca", "company": "Roy Planchers", "title": "Coordinator", "region": "QC-13", "budget": 5000, "interest_level": 4, "source": "cold_call"},
+  {"name": "Marc Bergeron", "email": "marc@bergeron.ca", "company": "Bergeron Concrete", "title": "VP Operations", "region": "QC-05", "budget": 45000, "interest_level": 10, "source": "referral"},
+  {"name": "Anne Bouchard", "email": "anne@bouchard.ca", "company": "Bouchard Reno", "title": "Specialist", "region": "QC-06", "budget": 3000, "interest_level": 3, "source": "social_media"},
+  {"name": "Luc Martin", "email": "luc@martin.ca", "company": "Martin Coatings", "title": "Director", "region": "QC-06", "budget": 20000, "interest_level": 7, "source": "website"},
+  {"name": "Julie Fortin", "email": "julie@fortin.ca", "company": "Fortin Floors", "title": "Supervisor", "region": "QC-03", "budget": 12000, "interest_level": 6, "source": "trade_show"}
+]

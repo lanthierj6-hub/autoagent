@@ -1,0 +1,302 @@
+[
+  {
+    "input": {
+      "quantity": 10,
+      "unit_price": 89.99,
+      "category": "standard",
+      "region": "QC-03"
+    },
+    "output": {
+      "total": 1034.66,
+      "tax": 134.76,
+      "priority": "low",
+      "code": "STA-899",
+      "flagged": false
+    }
+  },
+  {
+    "input": {
+      "quantity": 3,
+      "unit_price": 299.0,
+      "category": "premium",
+      "region": "QC-06"
+    },
+    "output": {
+      "total": 1546.99,
+      "tax": 201.49,
+      "priority": "medium",
+      "code": "PRE-345",
+      "flagged": false
+    }
+  },
+  {
+    "input": {
+      "quantity": 50,
+      "unit_price": 45.0,
+      "category": "bulk",
+      "region": "ON-01"
+    },
+    "output": {
+      "total": 2362.5,
+      "tax": 112.5,
+      "priority": "medium",
+      "code": "BUL-250",
+      "flagged": false
+    }
+  },
+  {
+    "input": {
+      "quantity": 1,
+      "unit_price": 500.0,
+      "category": "premium",
+      "region": "QC-12"
+    },
+    "output": {
+      "total": 862.31,
+      "tax": 112.31,
+      "priority": "low",
+      "code": "PRE-750",
+      "flagged": false
+    }
+  },
+  {
+    "input": {
+      "quantity": 100,
+      "unit_price": 32.5,
+      "category": "standard",
+      "region": "QC-03"
+    },
+    "output": {
+      "total": 3736.69,
+      "tax": 486.69,
+      "priority": "medium",
+      "code": "STA-250",
+      "flagged": false
+    }
+  },
+  {
+    "input": {
+      "quantity": 2,
+      "unit_price": 1200.0,
+      "category": "premium",
+      "region": "BC-01"
+    },
+    "output": {
+      "total": 3780.0,
+      "tax": 180.0,
+      "priority": "medium",
+      "code": "PRE-600",
+      "flagged": false
+    }
+  },
+  {
+    "input": {
+      "quantity": 7,
+      "unit_price": 149.5,
+      "category": "standard",
+      "region": "QC-13"
+    },
+    "output": {
+      "total": 1203.21,
+      "tax": 156.71,
+      "priority": "medium",
+      "code": "STA-046",
+      "flagged": false
+    }
+  },
+  {
+    "input": {
+      "quantity": 25,
+      "unit_price": 89.99,
+      "category": "standard",
+      "region": "AB-01"
+    },
+    "output": {
+      "total": 2362.24,
+      "tax": 112.49,
+      "priority": "medium",
+      "code": "STA-249",
+      "flagged": false
+    }
+  },
+  {
+    "input": {
+      "quantity": 1,
+      "unit_price": 50.0,
+      "category": "basic",
+      "region": "QC-05"
+    },
+    "output": {
+      "total": 57.49,
+      "tax": 7.49,
+      "priority": "low",
+      "code": "BAS-050",
+      "flagged": false
+    }
+  },
+  {
+    "input": {
+      "quantity": 15,
+      "unit_price": 199.99,
+      "category": "premium",
+      "region": "QC-06"
+    },
+    "output": {
+      "total": 5173.62,
+      "tax": 673.84,
+      "priority": "medium",
+      "code": "PRE-499",
+      "flagged": false
+    }
+  },
+  {
+    "input": {
+      "quantity": 200,
+      "unit_price": 15.0,
+      "category": "bulk",
+      "region": "QC-03"
+    },
+    "output": {
+      "total": 3449.25,
+      "tax": 449.25,
+      "priority": "medium",
+      "code": "BUL-000",
+      "flagged": false
+    }
+  },
+  {
+    "input": {
+      "quantity": 5,
+      "unit_price": 899.0,
+      "category": "premium",
+      "region": "ON-05"
+    },
+    "output": {
+      "total": 7079.62,
+      "tax": 337.12,
+      "priority": "high",
+      "code": "PRE-742",
+      "flagged": false
+    }
+  },
+  {
+    "input": {
+      "quantity": 8,
+      "unit_price": 75.0,
+      "category": "standard",
+      "region": "QC-07"
+    },
+    "output": {
+      "total": 689.85,
+      "tax": 89.85,
+      "priority": "low",
+      "code": "STA-600",
+      "flagged": false
+    }
+  },
+  {
+    "input": {
+      "quantity": 3,
+      "unit_price": 2500.0,
+      "category": "premium",
+      "region": "QC-03"
+    },
+    "output": {
+      "total": 12934.69,
+      "tax": 1684.69,
+      "priority": "high",
+      "code": "PRE-250",
+      "flagged": true
+    }
+  },
+  {
+    "input": {
+      "quantity": 40,
+      "unit_price": 22.0,
+      "category": "bulk",
+      "region": "MB-01"
+    },
+    "output": {
+      "total": 924.0,
+      "tax": 44.0,
+      "priority": "low",
+      "code": "BUL-880",
+      "flagged": false
+    }
+  },
+  {
+    "input": {
+      "quantity": 1,
+      "unit_price": 10.0,
+      "category": "basic",
+      "region": "QC-13"
+    },
+    "output": {
+      "total": 11.5,
+      "tax": 1.5,
+      "priority": "low",
+      "code": "BAS-010",
+      "flagged": false
+    }
+  },
+  {
+    "input": {
+      "quantity": 12,
+      "unit_price": 450.0,
+      "category": "standard",
+      "region": "QC-06"
+    },
+    "output": {
+      "total": 6208.65,
+      "tax": 808.65,
+      "priority": "high",
+      "code": "STA-400",
+      "flagged": false
+    }
+  },
+  {
+    "input": {
+      "quantity": 6,
+      "unit_price": 3000.0,
+      "category": "premium",
+      "region": "BC-02"
+    },
+    "output": {
+      "total": 28350.0,
+      "tax": 1350.0,
+      "priority": "high",
+      "code": "PRE-000",
+      "flagged": true
+    }
+  },
+  {
+    "input": {
+      "quantity": 30,
+      "unit_price": 67.5,
+      "category": "standard",
+      "region": "QC-05"
+    },
+    "output": {
+      "total": 2328.24,
+      "tax": 303.24,
+      "priority": "medium",
+      "code": "STA-025",
+      "flagged": false
+    }
+  },
+  {
+    "input": {
+      "quantity": 2,
+      "unit_price": 8000.0,
+      "category": "premium",
+      "region": "QC-03"
+    },
+    "output": {
+      "total": 27594.0,
+      "tax": 3594.0,
+      "priority": "high",
+      "code": "PRE-000",
+      "flagged": true
+    }
+  }
+]

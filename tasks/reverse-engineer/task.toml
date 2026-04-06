@@ -1,0 +1,9 @@
+[task]
+name = "reverse-engineer"
+description = "Reverse-engineer a hidden algorithm from 20 input/output samples, then apply it to 10 new inputs"
+category = "reasoning"
+difficulty = "brutal"
+
+[verifier]
+type = "script"
+command = "bash /task/tests/test.sh"

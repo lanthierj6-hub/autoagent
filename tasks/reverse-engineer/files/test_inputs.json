@@ -1,0 +1,62 @@
+[
+  {
+    "quantity": 4,
+    "unit_price": 175.0,
+    "category": "standard",
+    "region": "QC-03"
+  },
+  {
+    "quantity": 20,
+    "unit_price": 55.0,
+    "category": "bulk",
+    "region": "ON-03"
+  },
+  {
+    "quantity": 8,
+    "unit_price": 399.99,
+    "category": "premium",
+    "region": "QC-06"
+  },
+  {
+    "quantity": 1,
+    "unit_price": 25.0,
+    "category": "basic",
+    "region": "SK-01"
+  },
+  {
+    "quantity": 75,
+    "unit_price": 89.99,
+    "category": "standard",
+    "region": "QC-12"
+  },
+  {
+    "quantity": 3,
+    "unit_price": 5000.0,
+    "category": "premium",
+    "region": "QC-03"
+  },
+  {
+    "quantity": 10,
+    "unit_price": 120.0,
+    "category": "standard",
+    "region": "AB-02"
+  },
+  {
+    "quantity": 50,
+    "unit_price": 33.0,
+    "category": "bulk",
+    "region": "QC-05"
+  },
+  {
+    "quantity": 2,
+    "unit_price": 750.0,
+    "category": "premium",
+    "region": "BC-01"
+  },
+  {
+    "quantity": 15,
+    "unit_price": 200.0,
+    "category": "standard",
+    "region": "QC-13"
+  }
+]

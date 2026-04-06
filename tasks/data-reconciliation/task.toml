@@ -1,0 +1,9 @@
+[task]
+name = "data-reconciliation"
+description = "Full outer join 3 conflicting sources with field-level authority rules, computed scores, and reconciliation report"
+category = "data-engineering"
+difficulty = "brutal"
+
+[verifier]
+type = "script"
+command = "bash /task/tests/test.sh"

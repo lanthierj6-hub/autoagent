@@ -1,0 +1,9 @@
+[task]
+name = "multi-file-refactor"
+description = "Find and fix 10 bugs across 4 interconnected Python files in a lead scoring application"
+category = "debugging"
+difficulty = "brutal"
+
+[verifier]
+type = "script"
+command = "bash /task/tests/test.sh"

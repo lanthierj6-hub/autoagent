@@ -1,0 +1,58 @@
+[
+  {
+    "cust_id": "NE-001",
+    "total_invoiced": 45600.0,
+    "total_paid": 45600.0,
+    "outstanding": 0,
+    "last_invoice": "2026-03-28",
+    "payment_terms": "net30"
+  },
+  {
+    "cust_id": "NE-002",
+    "total_invoiced": 23400.0,
+    "total_paid": 18500.0,
+    "outstanding": 4900.0,
+    "last_invoice": "2026-03-22",
+    "payment_terms": "net60"
+  },
+  {
+    "cust_id": "NE-003",
+    "total_invoiced": 12800.0,
+    "total_paid": 12800.0,
+    "outstanding": 0,
+    "last_invoice": "2026-02-15",
+    "payment_terms": "net30"
+  },
+  {
+    "cust_id": "NE-004",
+    "total_invoiced": 67200.0,
+    "total_paid": 52000.0,
+    "outstanding": 15200.0,
+    "last_invoice": "2026-03-30",
+    "payment_terms": "net30"
+  },
+  {
+    "cust_id": "NE-005",
+    "total_invoiced": 8900.0,
+    "total_paid": 8900.0,
+    "outstanding": 0,
+    "last_invoice": "2026-01-20",
+    "payment_terms": "net30"
+  },
+  {
+    "cust_id": "NE-006",
+    "total_invoiced": 89500.0,
+    "total_paid": 78000.0,
+    "outstanding": 11500.0,
+    "last_invoice": "2026-03-31",
+    "payment_terms": "net45"
+  },
+  {
+    "cust_id": "NE-009",
+    "total_invoiced": 5400.0,
+    "total_paid": 5400.0,
+    "outstanding": 0,
+    "last_invoice": "2026-03-05",
+    "payment_terms": "net30"
+  }
+]

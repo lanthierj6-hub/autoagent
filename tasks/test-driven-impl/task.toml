@@ -1,0 +1,9 @@
+[task]
+name = "test-driven-impl"
+description = "Given 25 pytest test cases, implement the pricing engine module from scratch to pass all tests"
+category = "code-generation"
+difficulty = "brutal"
+
+[verifier]
+type = "script"
+command = "bash /task/tests/test.sh"

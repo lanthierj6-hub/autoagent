@@ -1,0 +1,74 @@
+[
+  {
+    "customer_id": "NE-001",
+    "name": "Garage Pro Qu\u00e9bec",
+    "email": "info@garagepro.ca",
+    "phone": "418-555-0101",
+    "region": "QC-03",
+    "tier": "gold",
+    "updated": "2026-03-15"
+  },
+  {
+    "customer_id": "NE-002",
+    "name": "Montreal Floor Masters",
+    "email": "contact@mtlfloors.ca",
+    "phone": "514-555-0202",
+    "region": "QC-06",
+    "tier": "silver",
+    "updated": "2026-03-10"
+  },
+  {
+    "customer_id": "NE-003",
+    "name": "Estrie Concrete Works",
+    "email": "admin@estrieconcrete.ca",
+    "phone": "819-555-0303",
+    "region": "QC-05",
+    "tier": "bronze",
+    "updated": "2026-02-28"
+  },
+  {
+    "customer_id": "NE-004",
+    "name": "Laval Reno Plus",
+    "email": "reno@lavalplus.ca",
+    "phone": "450-555-0404",
+    "region": "QC-13",
+    "tier": "gold",
+    "updated": "2026-03-20"
+  },
+  {
+    "customer_id": "NE-005",
+    "name": "Chaudiere Builders Inc",
+    "email": "build@chaudiere.ca",
+    "phone": "418-555-0505",
+    "region": "QC-12",
+    "tier": "silver",
+    "updated": "2026-03-01"
+  },
+  {
+    "customer_id": "NE-006",
+    "name": "SCI Distribution",
+    "email": "sci@distribution.ca",
+    "phone": "514-555-0606",
+    "region": "QC-06",
+    "tier": "gold",
+    "updated": "2026-03-18"
+  },
+  {
+    "customer_id": "NE-007",
+    "name": "Beauport Surfaces",
+    "email": "info@beauportsurfaces.ca",
+    "phone": "418-555-0707",
+    "region": "QC-03",
+    "tier": "bronze",
+    "updated": "2026-01-15"
+  },
+  {
+    "customer_id": "NE-008",
+    "name": "Sherbrooke Flooring",
+    "email": "sales@sherbfloor.ca",
+    "phone": "819-555-0808",
+    "region": "QC-05",
+    "tier": "silver",
+    "updated": "2026-03-12"
+  }
+]

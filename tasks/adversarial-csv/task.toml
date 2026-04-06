@@ -1,0 +1,9 @@
+[task]
+name = "adversarial-csv"
+description = "Clean malformed CSV with BOM, Unicode homoglyphs, mixed encodings, embedded newlines, date format chaos"
+category = "data-cleaning"
+difficulty = "brutal"
+
+[verifier]
+type = "script"
+command = "bash /task/tests/test.sh"

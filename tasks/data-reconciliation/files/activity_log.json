@@ -1,0 +1,65 @@
+[
+  {
+    "id": "NE-001",
+    "last_contact": "2026-03-30",
+    "contact_count_90d": 12,
+    "nps_score": 9,
+    "churn_risk": "low"
+  },
+  {
+    "id": "NE-002",
+    "last_contact": "2026-03-25",
+    "contact_count_90d": 5,
+    "nps_score": 7,
+    "churn_risk": "medium"
+  },
+  {
+    "id": "NE-003",
+    "last_contact": "2026-02-10",
+    "contact_count_90d": 1,
+    "nps_score": 4,
+    "churn_risk": "high"
+  },
+  {
+    "id": "NE-004",
+    "last_contact": "2026-03-31",
+    "contact_count_90d": 15,
+    "nps_score": 10,
+    "churn_risk": "low"
+  },
+  {
+    "id": "NE-005",
+    "last_contact": "2026-01-15",
+    "contact_count_90d": 0,
+    "nps_score": null,
+    "churn_risk": "critical"
+  },
+  {
+    "id": "NE-006",
+    "last_contact": "2026-03-29",
+    "contact_count_90d": 8,
+    "nps_score": 8,
+    "churn_risk": "low"
+  },
+  {
+    "id": "NE-007",
+    "last_contact": "2026-03-20",
+    "contact_count_90d": 3,
+    "nps_score": 6,
+    "churn_risk": "medium"
+  },
+  {
+    "id": "NE-008",
+    "last_contact": "2026-03-15",
+    "contact_count_90d": 4,
+    "nps_score": 7,
+    "churn_risk": "medium"
+  },
+  {
+    "id": "NE-010",
+    "last_contact": "2026-03-28",
+    "contact_count_90d": 2,
+    "nps_score": 5,
+    "churn_risk": "high"
+  }
+]
