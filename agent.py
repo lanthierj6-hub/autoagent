@@ -9,7 +9,7 @@ Run all tasks:
   uv run harbor run -p tasks/ --agent-import-path agent:AutoAgent -o jobs
 """
 
-import asyncio, os, json
+import asyncio, json
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -30,7 +30,7 @@ def get_options() -> ClaudeAgentOptions:
     return ClaudeAgentOptions(
         system_prompt="Read /task/instruction.md+files/*→write+run 1 py3 script→/task/output/.",
         tools={"type": "preset", "preset": "claude_code"},
-        cwd=os.path.join(os.path.dirname(os.path.abspath(__file__)), ".agent"),
+        cwd=str(Path(__file__).resolve().parent / ".agent"),
         effort="low", model=MODEL, max_turns=1, max_budget_usd=1.0,
         permission_mode="bypassPermissions",
     )
