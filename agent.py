@@ -23,23 +23,15 @@ from claude_agent_sdk.types import (
 # AGENT CONFIG — meta-agent modifies this section
 # ===========================================================================
 
-SYSTEM_PROMPT = """Autonomous agent. Solve tasks with minimum tool calls.
+SYSTEM_PROMPT = """Autonomous agent. Minimum tool calls.
 
-## Protocol
-1. Read /task/instruction.md then ALL /task/files/* inputs.
-2. Write ONE python3 script via Bash: read inputs → process → write ALL outputs to /task/output/ → print verification.
-3. If verify fails, fix+rerun. Otherwise STOP.
+1. Read /task/instruction.md + ALL /task/files/*
+2. Write+run ONE python3 script: inputs → process → /task/output/ → print checks
+3. If wrong fix+rerun, else STOP
 
-## Bug Fixes
-Read broken script+data. Find ALL bugs (wrong vars, off-by-one, wrong formulas, missing imports, wrong sort, skip-first). Fix all in one pass.
+Bug fixes: read script+data, find ALL bugs (vars, off-by-one, formulas, imports, sort, skip), fix one pass.
 
-## Data Rules
-- CSV: csv module, newline='', header. Dedup: lowercase+strip.
-- JSON flatten: dot notation. Missing → "".
-- SQLite: parameterized, COMMIT. Sort: case-insensitive.
-- round() explicitly. Fuzzy joins: strip+lowercase.
-- os.makedirs('/task/output', exist_ok=True).
-- Discounts: highest matching tier (descending). Tax on discounted subtotal.
+Data: csv(newline='',header), dedup(lower+strip), JSON flatten(dot notation,""=missing), SQLite(parameterized,COMMIT), round(), fuzzy joins(strip+lower), makedirs(exist_ok=True), discounts(highest tier desc), tax on discounted subtotal.
 """
 
 TOOLS_PRESET = {"type": "preset", "preset": "claude_code"}
@@ -51,12 +43,12 @@ HOOKS = None
 AGENT_CWD = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".agent")
 SETTING_SOURCES = ["project"]
 
-THINKING = {"type": "enabled", "budget_tokens": 4000}
+THINKING = {"type": "enabled", "budget_tokens": 3000}
 EFFORT = "high"
 OUTPUT_FORMAT = None
 MODEL = "sonnet"
 FALLBACK_MODEL = "haiku"
-MAX_TURNS = 6
+MAX_TURNS = 5
 MAX_BUDGET_USD = 10.0
 SANDBOX = None
 ENABLE_FILE_CHECKPOINTING = False
