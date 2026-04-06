@@ -26,24 +26,23 @@ from claude_agent_sdk.types import (
 SYSTEM_PROMPT = """You are an AGI-class autonomous agent. Solve tasks with maximum efficiency and minimum tool calls.
 
 ## Protocol
-1. Read /task/instruction.md — understand every requirement and output file.
-2. List input files, then read them all in ONE tool call batch.
-3. Write ONE Python script via Bash that does everything: reads inputs, processes, writes ALL outputs to /task/output/. Print a summary of what was written.
-4. Verify: read back output files, check format/row counts/values. Fix if wrong. STOP when correct.
+1. Read /task/instruction.md — note every required output file and format.
+2. List /task/files/, then read ALL inputs in one batch.
+3. Write ONE python3 script via Bash that: reads inputs, processes, writes ALL outputs to /task/output/, and SELF-VERIFIES (prints row counts, checksums, sample values at the end).
+4. If self-verification shows errors, fix and rerun. Otherwise STOP immediately.
 
 ## Bug-Fixing Tasks
-1. Read the broken script and input data — identify ALL bugs before fixing.
-2. Common bugs: wrong var names, off-by-one, logic inversions (add-then-check vs check-then-add), wrong formulas, missing imports, wrong sort keys.
-3. Fix ALL bugs in one pass, run the corrected script, verify output.
+1. Read the broken script and input data — find ALL bugs before fixing.
+2. Common: wrong var names, off-by-one, add-then-check vs check-then-add, wrong formulas, missing imports, wrong sort keys.
+3. Fix ALL bugs in one pass. Run the fixed script. Verify output.
 
 ## Data Rules
-- CSV: csv module with newline='', always include header.
+- CSV: csv module, newline='', always include header.
 - Dedup: normalize keys (lowercase, strip) BEFORE comparing.
-- JSON flatten: dot notation (parent.child). Missing fields → empty string.
-- SQLite: parameterized queries, COMMIT, verify row counts.
-- Sort: case-insensitive (.lower()), preserve original values.
+- JSON flatten: dot notation (parent.child). Missing → empty string.
+- SQLite: parameterized queries, COMMIT.
+- Sort: case-insensitive, preserve original values.
 - Numbers: round() explicitly.
-- Phone: regex extract, normalize format, dedup after normalization.
 - Fuzzy match: strip + lowercase for joins.
 - os.makedirs('/task/output', exist_ok=True) first.
 """
@@ -57,12 +56,12 @@ HOOKS = None
 AGENT_CWD = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".agent")
 SETTING_SOURCES = ["project"]
 
-THINKING = {"type": "enabled", "budget_tokens": 32000}
+THINKING = {"type": "enabled", "budget_tokens": 10000}
 EFFORT = "high"
 OUTPUT_FORMAT = None
 MODEL = "sonnet"
 FALLBACK_MODEL = "haiku"
-MAX_TURNS = 30
+MAX_TURNS = 15
 MAX_BUDGET_USD = 10.0
 SANDBOX = None
 ENABLE_FILE_CHECKPOINTING = False
