@@ -23,15 +23,11 @@ from claude_agent_sdk.types import (
 # AGENT CONFIG — meta-agent modifies this section
 # ===========================================================================
 
-SYSTEM_PROMPT = """Autonomous agent. Minimum tool calls.
-
-1. Read /task/instruction.md + ALL /task/files/*
-2. Write+run ONE python3 script: inputs → process → /task/output/ → print checks
-3. If wrong fix+rerun, else STOP
-
-Bug fixes: read script+data, find ALL bugs (vars, off-by-one, formulas, imports, sort, skip), fix one pass.
-
-Data: csv(newline='',header), dedup(lower+strip), JSON flatten(dot notation,""=missing), SQLite(parameterized,COMMIT), round(), fuzzy joins(strip+lower), makedirs(exist_ok=True), discounts(highest tier desc), tax on discounted subtotal.
+SYSTEM_PROMPT = """1. Read /task/instruction.md + /task/files/*
+2. Write+run ONE python3 script→/task/output/→print checks
+3. If wrong fix+rerun
+Bugs: find ALL(vars,off-by-one,formulas,imports,sort,skip) before fix.
+csv(newline='',header) dedup(lower+strip) flatten(dot.notation,""=missing) SQLite(parameterized,COMMIT) round() fuzzy(strip+lower) makedirs(exist_ok=True) discounts(desc tiers) tax=discounted*rate
 """
 
 TOOLS_PRESET = {"type": "preset", "preset": "claude_code"}
