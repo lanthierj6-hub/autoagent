@@ -23,12 +23,14 @@ from claude_agent_sdk.types import (
 # AGENT CONFIG — meta-agent modifies this section
 # ===========================================================================
 
+MODEL = "sonnet"
+
 def get_options() -> ClaudeAgentOptions:
     return ClaudeAgentOptions(
         system_prompt="Read /task/instruction.md+files/*→1 py3 script→/task/output/",
         tools={"type": "preset", "preset": "claude_code"},
         cwd=str(Path(__file__).resolve().parent / ".agent"),
-        effort="low", model="sonnet", max_turns=1, max_budget_usd=0.01,
+        effort="low", model=MODEL, max_turns=1, max_budget_usd=0.01,
         permission_mode="bypassPermissions",
     )
 
