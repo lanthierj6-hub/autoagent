@@ -1,0 +1,24 @@
+{
+  "orders": [
+    {"order_id": "ORD-001", "date": "2026-03-01", "customer_id": "C001", "product_sku": "P001", "quantity": 5},
+    {"order_id": "ORD-002", "date": "2026-03-02", "customer_id": "C002", "product_sku": "P003", "quantity": 2},
+    {"order_id": "ORD-003", "date": "2026-03-03", "customer_id": "C003", "product_sku": "P005", "quantity": 30},
+    {"order_id": "ORD-004", "date": "2026-03-05", "customer_id": "C001", "product_sku": "P004", "quantity": 12},
+    {"order_id": "ORD-005", "date": "2026-03-07", "customer_id": "C004", "product_sku": "P001", "quantity": 8},
+    {"order_id": "ORD-006", "date": "2026-03-08", "customer_id": "C005", "product_sku": "P006", "quantity": 50},
+    {"order_id": "ORD-007", "date": "2026-03-10", "customer_id": "C002", "product_sku": "P002", "quantity": 3},
+    {"order_id": "ORD-008", "date": "2026-03-12", "customer_id": "C006", "product_sku": "P004", "quantity": 25},
+    {"order_id": "ORD-009", "date": "2026-03-14", "customer_id": "C007", "product_sku": "P001", "quantity": 15},
+    {"order_id": "ORD-010", "date": "2026-03-15", "customer_id": "C003", "product_sku": "P002", "quantity": 6},
+    {"order_id": "ORD-011", "date": "2026-03-17", "customer_id": "C001", "product_sku": "P003", "quantity": 1},
+    {"order_id": "ORD-012", "date": "2026-03-19", "customer_id": "C008", "product_sku": "P005", "quantity": 20},
+    {"order_id": "ORD-013", "date": "2026-03-20", "customer_id": "C004", "product_sku": "P006", "quantity": 40},
+    {"order_id": "ORD-014", "date": "2026-03-22", "customer_id": "C002", "product_sku": "P001", "quantity": 55},
+    {"order_id": "ORD-015", "date": "2026-03-25", "customer_id": "C009", "product_sku": "P004", "quantity": 10},
+    {"order_id": "ORD-016", "date": "2026-03-27", "customer_id": "C005", "product_sku": "P002", "quantity": 4},
+    {"order_id": "ORD-017", "date": "2026-03-28", "customer_id": "C001", "product_sku": "P005", "quantity": 100},
+    {"order_id": "ORD-018", "date": "2026-03-30", "customer_id": "C006", "product_sku": "P003", "quantity": 2},
+    {"order_id": "ORD-019", "date": "2026-03-31", "customer_id": "C003", "product_sku": "P006", "quantity": 25},
+    {"order_id": "ORD-020", "date": "2026-03-31", "customer_id": "C007", "product_sku": "P004", "quantity": 7}
+  ]
+}

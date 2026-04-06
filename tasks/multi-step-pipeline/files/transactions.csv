@@ -1,0 +1,21 @@
+transaction_id,date,company_name,amount,description,region_code
+T001,2026-03-01,Novus Epoxy,15000.00,Garage floor residential,QC-03
+T002,2026-03-02,SCI Epoxy Montreal,45000.00,Industrial warehouse floor,QC-06
+T003,2026-03-03,novus epoxy,8500.00,Basement coating,QC-03
+T004,2026-03-05,Bergeron Concrete,22000.00,Polished concrete office,QC-05
+T005,2026-03-07, SCI Epoxy Montreal ,32000.00,Retail store floor,QC-06
+T006,2026-03-08,Lavoie Construction,67000.00,Foundation commercial,QC-03
+T007,2026-03-10,Roy Planchers,12500.00,Residential epoxy,QC-13
+T008,2026-03-12,TREMBLAY SURFACES,28000.00,Restaurant floor,QC-12
+T009,2026-03-14,Gagnon Masonry,18500.00,Stone wall restoration,QC-05
+T010,2026-03-15,Martin Coatings,9800.00,Pool deck coating,QC-06
+T011,2026-03-17,Novus Epoxy,21000.00,Commercial showroom,QC-03
+T012,2026-03-19,bergeron concrete,14500.00,Stained patio,QC-05
+T013,2026-03-20,Roy Planchers,31000.00,Gym floor coating,QC-13
+T014,2026-03-22,SCI Epoxy Montreal,55000.00,Factory floor renovation,QC-06
+T015,2026-03-25,Lavoie Construction,43000.00,Residential foundation,QC-03
+T016,2026-03-27,Tremblay Surfaces,19500.00,Office building lobby,QC-12
+T017,2026-03-28,NOVUS EPOXY,33000.00,Hotel lobby floor,QC-03
+T018,2026-03-30,Gagnon Masonry,11200.00,Chimney repair,QC-05
+T019,2026-03-31,Martin Coatings,16800.00,Driveway coating,QC-06
+T020,2026-03-31,Roy Planchers,24000.00,Condo building common areas,QC-13

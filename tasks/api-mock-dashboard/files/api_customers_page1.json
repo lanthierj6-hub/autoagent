@@ -1,0 +1,12 @@
+{
+  "page": 1,
+  "total_pages": 2,
+  "total_records": 10,
+  "data": [
+    {"id": "C001", "name": "Garage Pro Quebec", "region": "QC-03", "email": "info@garagepro.ca", "since": "2024-01-15"},
+    {"id": "C002", "name": "Montreal Floor Masters", "region": "QC-06", "email": "contact@mtlfloors.ca", "since": "2024-03-20"},
+    {"id": "C003", "name": "Estrie Concrete Works", "region": "QC-05", "email": "admin@estrieconcrete.ca", "since": "2024-06-10"},
+    {"id": "C004", "name": "Laval Renovation Plus", "region": "QC-13", "email": "reno@lavalplus.ca", "since": "2024-08-01"},
+    {"id": "C005", "name": "Chaudiere Builders", "region": "QC-12", "email": "build@chaudiere.ca", "since": "2024-09-15"}
+  ]
+}

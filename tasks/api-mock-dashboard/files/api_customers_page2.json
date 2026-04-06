@@ -1,0 +1,12 @@
+{
+  "page": 2,
+  "total_pages": 2,
+  "total_records": 10,
+  "data": [
+    {"id": "C006", "name": "SCI Distribution", "region": "QC-06", "email": "sci@distribution.ca", "since": "2024-10-01"},
+    {"id": "C007", "name": "Beauport Surfaces", "region": "QC-03", "email": "info@beauportsurfaces.ca", "since": "2024-11-20"},
+    {"id": "C008", "name": "Sherbrooke Flooring Co", "region": "QC-05", "email": "sales@sherbfloor.ca", "since": "2025-01-10"},
+    {"id": "C009", "name": "Levis Pro Coatings", "region": "QC-12", "email": "pro@leviscoat.ca", "since": "2025-02-15"},
+    {"id": "C010", "name": "Gatineau Industrial", "region": "QC-07", "email": "ind@gatineau.ca", "since": "2025-03-01"}
+  ]
+}

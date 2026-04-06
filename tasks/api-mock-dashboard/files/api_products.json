@@ -1,0 +1,12 @@
+{
+  "products": [
+    {"sku": "P001", "name": "Epoxy Standard", "category": "flooring", "base_price": 89.99},
+    {"sku": "P002", "name": "Epoxy Premium", "category": "flooring", "base_price": 199.99},
+    {"sku": "P003", "name": "Metallic Epoxy", "category": "flooring", "base_price": 299.00},
+    {"sku": "P004", "name": "Polyurea Coating", "category": "coating", "base_price": 149.50},
+    {"sku": "P005", "name": "Concrete Sealer", "category": "sealer", "base_price": 45.00},
+    {"sku": "P006", "name": "Floor Primer", "category": "primer", "base_price": 32.50},
+    {"sku": "P007", "name": "Anti-Slip Additive", "category": "additive", "base_price": 24.99},
+    {"sku": "P008", "name": "UV Resistant Topcoat", "category": "coating", "base_price": 175.00}
+  ]
+}

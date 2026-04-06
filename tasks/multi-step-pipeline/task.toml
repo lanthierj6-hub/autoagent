@@ -1,0 +1,9 @@
+[task]
+name = "multi-step-pipeline"
+description = "5-step data pipeline: normalize, enrich, analytics, report, SQLite archive"
+category = "data-engineering"
+difficulty = "hard"
+
+[verifier]
+type = "script"
+command = "bash /task/tests/test.sh"

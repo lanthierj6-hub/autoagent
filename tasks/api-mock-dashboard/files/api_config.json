@@ -1,0 +1,17 @@
+{
+  "tax_rates": {
+    "QC-03": 0.14975,
+    "QC-05": 0.14975,
+    "QC-06": 0.14975,
+    "QC-07": 0.14975,
+    "QC-12": 0.14975,
+    "QC-13": 0.14975
+  },
+  "discount_tiers": [
+    {"min_qty": 50, "discount_pct": 15},
+    {"min_qty": 25, "discount_pct": 10},
+    {"min_qty": 10, "discount_pct": 5}
+  ],
+  "business_name": "Novus Epoxy Distribution",
+  "report_currency": "CAD"
+}

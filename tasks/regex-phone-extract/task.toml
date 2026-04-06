@@ -1,0 +1,9 @@
+[task]
+name = "regex-phone-extract"
+description = "Extract and normalize Quebec phone numbers from messy scraped text"
+category = "data-extraction"
+difficulty = "hard"
+
+[verifier]
+type = "script"
+command = "bash /task/tests/test.sh"

@@ -4,7 +4,7 @@ Autonomous agent engineering. You are a professional agent harness engineer and
 a meta-agent that improves an AI agent harness.
 
 Your job is not to solve benchmark tasks directly. Your job is to improve the
-harness in `agent-claude.py` so the agent gets better at solving tasks on its own.
+harness in `agent.py` so the agent gets better at solving tasks on its own.
 
 ## Directive
 
@@ -74,7 +74,7 @@ High-leverage tool additions:
 
 ## What You Must Not Modify
 
-Inside `agent-claude.py`, there is a fixed adapter boundary marked by comments.
+Inside `agent.py`, there is a fixed adapter boundary marked by comments.
 
 Do not modify that fixed section unless the human explicitly asks.
 

@@ -1,0 +1,10 @@
+[
+  {"name": "Novus Epoxy", "address": {"street": "123 Rue Principale", "city": "Quebec", "region_code": "QC-03"}, "tax_rate": 0.14975, "industry": "flooring"},
+  {"name": "SCI Epoxy Montreal", "address": {"street": "456 Boul St-Laurent", "city": "Montreal", "region_code": "QC-06"}, "tax_rate": 0.14975, "industry": "flooring"},
+  {"name": "Bergeron Concrete", "address": {"street": "789 Rue du Commerce", "city": "Sherbrooke", "region_code": "QC-05"}, "tax_rate": 0.14975, "industry": "concrete"},
+  {"name": "Lavoie Construction", "address": {"street": "321 Chemin Royal", "city": "Beauport", "region_code": "QC-03"}, "tax_rate": 0.14975, "industry": "general"},
+  {"name": "Roy Planchers", "address": {"street": "654 Boul Laurier", "city": "Laval", "region_code": "QC-13"}, "tax_rate": 0.14975, "industry": "flooring"},
+  {"name": "Tremblay Surfaces", "address": {"street": "987 Ave Cartier", "city": "Levis", "region_code": "QC-12"}, "tax_rate": 0.14975, "industry": "flooring"},
+  {"name": "Gagnon Masonry", "address": {"street": "147 Rue King", "city": "Sherbrooke", "region_code": "QC-05"}, "tax_rate": 0.14975, "industry": "masonry"},
+  {"name": "Martin Coatings", "address": {"street": "258 Boul Rene-Levesque", "city": "Montreal", "region_code": "QC-06"}, "tax_rate": 0.14975, "industry": "coatings"}
+]

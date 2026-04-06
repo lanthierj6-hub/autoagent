@@ -1,0 +1,9 @@
+[task]
+name = "error-recovery-etl"
+description = "Debug and fix 6 bugs in a broken ETL pipeline, then run it to produce correct output"
+category = "debugging"
+difficulty = "hard"
+
+[verifier]
+type = "script"
+command = "bash /task/tests/test.sh"

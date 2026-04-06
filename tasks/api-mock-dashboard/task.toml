@@ -1,0 +1,9 @@
+[task]
+name = "api-mock-dashboard"
+description = "Build reporting dashboard from paginated API mock data with joins, discounts, tax, and multi-format output"
+category = "data-engineering"
+difficulty = "hard"
+
+[verifier]
+type = "script"
+command = "bash /task/tests/test.sh"
