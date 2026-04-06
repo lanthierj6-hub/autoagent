@@ -1,0 +1,9 @@
+[task]
+name = "json-to-csv"
+description = "Flatten nested JSON API response into a sorted CSV with metadata"
+category = "data-processing"
+difficulty = "medium"
+
+[verifier]
+type = "script"
+command = "bash /task/tests/test.sh"

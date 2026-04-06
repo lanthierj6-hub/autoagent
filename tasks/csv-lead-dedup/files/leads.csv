@@ -1,0 +1,16 @@
+name,email,phone,company,source
+Alice Martin,alice@novus.com,514-555-0101,Novus Epoxy,facebook
+Bob Tremblay,bob@sciepoxy.ca,418-555-0202,SCI Epoxy,google
+Alice Martin,ALICE@novus.com,514-555-0101,Novus Epoxy,instagram
+Charlie Lavoie,charlie@gmail.com,581-555-0303,Lavoie Construction,scraper
+Diana Roy,diana@hotmail.com,450-555-0404,Roy Renovation,linkedin
+Bob Tremblay,Bob@SciEpoxy.CA,418-555-0202,SCI Epoxy,referral
+Eve Gagnon,eve@outlook.com,819-555-0505,Gagnon Floors,facebook
+Frank Pelletier,frank@yahoo.ca,438-555-0606,Pelletier Inc,google
+Charlie Lavoie,CHARLIE@gmail.com,581-555-0303,Lavoie Construction,facebook
+Grace Bouchard,grace@novus.com,514-555-0707,Bouchard Design,scraper
+Henry Cote,henry@hotmail.com,418-555-0808,Cote Masonry,linkedin
+Eve Gagnon,EVE@outlook.com,819-555-0505,Gagnon Floors,referral
+Isabelle Morin,isabelle@gmail.com,450-555-0909,Morin Concrete,google
+Jack Fortin,jack@sciepoxy.ca,581-555-1010,SCI Epoxy,facebook
+Henry Cote,henry@HOTMAIL.com,418-555-0808,Cote Masonry,scraper

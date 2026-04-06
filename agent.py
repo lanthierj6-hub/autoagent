@@ -1,199 +1,113 @@
-"""Single-file Harbor agent harness: --agent-import-path agent:AutoAgent."""
+"""
+The agent-under-test. The meta-agent (Claude Code) iterates on this file.
 
-from __future__ import annotations
+Top: agent config (modify freely) + Harbor adapter (fixed harness).
 
-import json
-import time
+Run all tasks:
+  docker build -f Dockerfile.base -t autoagent-base .
+  set -a && source .env && set +a
+  uv run harbor run -p tasks/ --agent-import-path agent:AutoAgent -o jobs
+"""
+
+import asyncio, os, json
 from datetime import datetime, timezone
+from pathlib import Path
 
-from agents import Agent, Runner, function_tool
-from agents.items import (
-    ItemHelpers,
-    MessageOutputItem,
-    ReasoningItem,
-    ToolCallItem,
-    ToolCallOutputItem,
+from claude_agent_sdk import ClaudeSDKClient, ClaudeAgentOptions, ResultMessage, tool
+from claude_agent_sdk.types import (
+    AssistantMessage, UserMessage, TextBlock, ThinkingBlock,
+    ToolUseBlock, ToolResultBlock,
 )
-from agents.tool import FunctionTool
-from agents.usage import Usage
+
+# ===========================================================================
+# AGENT CONFIG — meta-agent modifies this section
+# ===========================================================================
+
+SYSTEM_PROMPT = """You are an AGI-class autonomous agent with full system access. You solve ANY task thrown at you — coding, data engineering, scraping, API integration, database ops, file manipulation, network ops, system administration. You are relentless, creative, and never stop until the job is done perfectly.
+
+## Core Protocol
+1. Read /task/instruction.md — understand the FULL scope, not just the surface.
+2. Deep-scan the environment — files, tools, packages, network, databases, APIs.
+3. THINK DEEPLY before acting. Use your extended thinking to plan multi-step strategies.
+4. Execute with surgical precision. Verify EVERY output.
+5. If something fails, diagnose the ROOT CAUSE, don't just retry blindly.
+6. Self-correct: re-read your own output, validate it matches requirements.
+
+## Capabilities
+- Python 3 (pandas, numpy, openpyxl, requests, beautifulsoup4, sqlite3, PIL)
+- Shell/Bash — full system commands, package installation, process management
+- Git — clone, diff, commit, push, branch management
+- Databases — SQLite, PostgreSQL, MySQL via CLI or Python
+- Web — HTTP requests, API calls, scraping, data extraction
+- File I/O — read/write any format (JSON, CSV, YAML, XML, binary)
+- System — process management, cron, file permissions, networking
+
+## Self-Improvement Rules
+- After each task, analyze what worked and what didn't
+- Extract reusable patterns and store them in .agent/ workspace
+- Build compound tools from simple ones
+- Optimize for SPEED and ACCURACY simultaneously
+- When stuck, decompose the problem into smaller solvable pieces
+- Use parallel execution when tasks are independent
+- Cache intermediate results to avoid redundant computation
+
+## Quality Standard
+- NEVER submit partial work
+- ALWAYS verify outputs match expected format and content
+- Cross-validate results using multiple methods when possible
+- Handle edge cases explicitly
+- Clean up temporary files and resources
+"""
+
+TOOLS_PRESET = {"type": "preset", "preset": "claude_code"}
+CUSTOM_TOOLS = []
+EXTERNAL_MCP_SERVERS = {}
+SUBAGENTS = None
+HOOKS = None
+
+AGENT_CWD = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".agent")
+SETTING_SOURCES = ["project"]
+
+THINKING = {"type": "enabled", "budget_tokens": 128000}
+EFFORT = "high"
+OUTPUT_FORMAT = None
+MODEL = "sonnet"
+FALLBACK_MODEL = "haiku"
+MAX_TURNS = 200
+MAX_BUDGET_USD = 10.0
+SANDBOX = None
+ENABLE_FILE_CHECKPOINTING = True
+
+
+def get_options() -> ClaudeAgentOptions:
+    mcp = dict(EXTERNAL_MCP_SERVERS)
+    if CUSTOM_TOOLS:
+        from claude_agent_sdk import create_sdk_mcp_server
+        mcp["tools"] = create_sdk_mcp_server("tools", tools=CUSTOM_TOOLS)
+    return ClaudeAgentOptions(
+        system_prompt=SYSTEM_PROMPT, tools=TOOLS_PRESET, mcp_servers=mcp,
+        cwd=AGENT_CWD,
+        agents=SUBAGENTS, hooks=HOOKS, setting_sources=SETTING_SOURCES,
+        thinking=THINKING, effort=EFFORT, output_format=OUTPUT_FORMAT,
+        model=MODEL, fallback_model=FALLBACK_MODEL,
+        max_turns=MAX_TURNS, max_budget_usd=MAX_BUDGET_USD,
+        sandbox=SANDBOX, enable_file_checkpointing=ENABLE_FILE_CHECKPOINTING,
+        permission_mode="bypassPermissions",
+    )
+
+
+# ===========================================================================
+# HARBOR ADAPTER — fixed harness, do not modify
+# ===========================================================================
+
+from dotenv import dotenv_values
 from harbor.agents.base import BaseAgent
 from harbor.environments.base import BaseEnvironment
 from harbor.models.agent.context import AgentContext
 
 
-# ============================================================================
-# EDITABLE HARNESS — prompt, tools, agent construction
-# ============================================================================
-
-SYSTEM_PROMPT = "You are an agent that executes tasks"
-MODEL = "gpt-5"
-MAX_TURNS = 30
-
-
-def create_tools(environment: BaseEnvironment) -> list[FunctionTool]:
-    """Create tools for the agent. Add new tools here."""
-
-    @function_tool
-    async def run_shell(command: str) -> str:
-        """Run a shell command in the task environment. Returns stdout and stderr."""
-        try:
-            result = await environment.exec(command=command, timeout_sec=120)
-            out = ""
-            if result.stdout:
-                out += result.stdout
-            if result.stderr:
-                out += f"\nSTDERR:\n{result.stderr}" if out else f"STDERR:\n{result.stderr}"
-            return out or "(no output)"
-        except Exception as exc:
-            return f"ERROR: {exc}"
-
-    return [run_shell]
-
-
-def create_agent(environment: BaseEnvironment) -> Agent:
-    """Build the agent. Modify to add handoffs, sub-agents, or agent-as-tool."""
-    tools = create_tools(environment)
-    return Agent(
-        name="autoagent",
-        instructions=SYSTEM_PROMPT,
-        tools=tools,
-        model=MODEL,
-    )
-
-
-async def run_task(
-    environment: BaseEnvironment,
-    instruction: str,
-) -> tuple[object, int]:
-    """Run the agent on a task and return (result, duration_ms)."""
-    agent = create_agent(environment)
-    t0 = time.time()
-    result = await Runner.run(agent, input=instruction, max_turns=MAX_TURNS)
-    duration_ms = int((time.time() - t0) * 1000)
-    return result, duration_ms
-
-
-# ============================================================================
-# FIXED ADAPTER BOUNDARY: do not modify unless the human explicitly asks.
-# Harbor integration and trajectory serialization live here.
-# ============================================================================
-
-def to_atif(result: object, model: str, duration_ms: int = 0) -> dict:
-    """Convert OpenAI Agents SDK RunResult to an ATIF trajectory dict."""
-    steps: list[dict] = []
-    step_id = 0
-    now = datetime.now(timezone.utc).isoformat()
-
-    def _step(source: str, message: str, **extra: object) -> dict:
-        nonlocal step_id
-        step_id += 1
-        step = {
-            "step_id": step_id,
-            "timestamp": now,
-            "source": source,
-            "message": message,
-        }
-        step.update({key: value for key, value in extra.items() if value is not None})
-        return step
-
-    pending_tool_call = None
-    for item in result.new_items:
-        if isinstance(item, MessageOutputItem):
-            text = ItemHelpers.text_message_output(item)
-            if text:
-                steps.append(_step("agent", text, model_name=model))
-        elif isinstance(item, ReasoningItem):
-            summaries = getattr(item.raw_item, "summary", None)
-            reasoning = "\n".join(s.text for s in summaries if hasattr(s, "text")) if summaries else None
-            if reasoning:
-                steps.append(
-                    _step(
-                        "agent",
-                        "(thinking)",
-                        reasoning_content=reasoning,
-                        model_name=model,
-                    )
-                )
-        elif isinstance(item, ToolCallItem):
-            raw = item.raw_item
-            if hasattr(raw, "name"):
-                pending_tool_call = raw
-        elif isinstance(item, ToolCallOutputItem) and pending_tool_call:
-            arguments = (
-                json.loads(pending_tool_call.arguments)
-                if isinstance(pending_tool_call.arguments, str)
-                else pending_tool_call.arguments
-            )
-            output_str = str(item.output) if item.output else ""
-            steps.append(
-                _step(
-                    "agent",
-                    f"Tool: {pending_tool_call.name}",
-                    tool_calls=[
-                        {
-                            "tool_call_id": pending_tool_call.call_id,
-                            "function_name": pending_tool_call.name,
-                            "arguments": arguments,
-                        }
-                    ],
-                    observation={
-                        "results": [
-                            {
-                                "source_call_id": pending_tool_call.call_id,
-                                "content": output_str,
-                            }
-                        ]
-                    },
-                )
-            )
-            pending_tool_call = None
-
-    if pending_tool_call:
-        arguments = (
-            json.loads(pending_tool_call.arguments)
-            if isinstance(pending_tool_call.arguments, str)
-            else pending_tool_call.arguments
-        )
-        steps.append(
-            _step(
-                "agent",
-                f"Tool: {pending_tool_call.name}",
-                tool_calls=[
-                    {
-                        "tool_call_id": pending_tool_call.call_id,
-                        "function_name": pending_tool_call.name,
-                        "arguments": arguments,
-                    }
-                ],
-            )
-        )
-
-    if not steps:
-        steps.append(_step("user", "(empty)"))
-
-    usage = Usage()
-    for response in result.raw_responses:
-        usage.add(response.usage)
-
-    return {
-        "schema_version": "ATIF-v1.6",
-        "session_id": getattr(result, "last_response_id", None) or "unknown",
-        "agent": {"name": "autoagent", "version": "0.1.0", "model_name": model},
-        "steps": steps,
-        "final_metrics": {
-            "total_prompt_tokens": usage.input_tokens,
-            "total_completion_tokens": usage.output_tokens,
-            "total_cached_tokens": getattr(usage.input_tokens_details, "cached_tokens", 0) or 0,
-            "total_cost_usd": None,
-            "total_steps": len(steps),
-            "extra": {"duration_ms": duration_ms, "num_turns": len(result.raw_responses)},
-        },
-    }
-
-
 class AutoAgent(BaseAgent):
-    """Harbor agent adapter. Runs the OpenAI agent host-side and proxies shell into the container."""
-
+    """Harbor agent adapter. Execs this file inside the container."""
     SUPPORTS_ATIF = True
 
     def __init__(self, *args, extra_env: dict[str, str] | None = None, **kwargs):
@@ -216,27 +130,146 @@ class AutoAgent(BaseAgent):
         instr_file.write_text(instruction)
         await environment.upload_file(source_path=instr_file, target_path="/task/instruction.md")
 
-        result, duration_ms = await run_task(environment, instruction)
+        ALLOWED_ENV_KEYS = {"ANTHROPIC_API_KEY", "IS_SANDBOX", "MODEL", "FALLBACK_MODEL"}
+        raw_env = dotenv_values()
+        env = {"IS_SANDBOX": "1"}
+        env.update({k: v for k, v in raw_env.items() if k in ALLOWED_ENV_KEYS and v})
+        env.update(self._extra_env)
 
-        atif = to_atif(result, model=MODEL, duration_ms=duration_ms)
-        traj_path = self.logs_dir / "trajectory.json"
-        traj_path.write_text(json.dumps(atif, indent=2))
-
-        try:
-            final_metrics = atif.get("final_metrics", {})
-            context.n_input_tokens = final_metrics.get("total_prompt_tokens", 0)
-            context.n_output_tokens = final_metrics.get("total_completion_tokens", 0)
-            context.n_cache_tokens = final_metrics.get("total_cached_tokens", 0)
-        except Exception:
-            pass
-
-        usage = Usage()
-        for response in result.raw_responses:
-            usage.add(response.usage)
-        print(
-            f"turns={len(result.raw_responses)} duration_ms={duration_ms} "
-            f"input={usage.input_tokens} output={usage.output_tokens}"
+        result = await environment.exec(
+            command="cd /app && python agent.py",
+            env=env,
+            timeout_sec=600,
         )
+        if result.stdout:
+            (self.logs_dir / "agent_stdout.txt").write_text(result.stdout)
+        if result.stderr:
+            (self.logs_dir / "agent_stderr.txt").write_text(result.stderr)
+
+        traj_path = self.logs_dir / "trajectory.json"
+        if traj_path.exists():
+            try:
+                fm = json.loads(traj_path.read_text()).get("final_metrics", {})
+                context.cost_usd = fm.get("total_cost_usd")
+                context.n_input_tokens = fm.get("total_prompt_tokens", 0)
+                context.n_output_tokens = fm.get("total_completion_tokens", 0)
+                context.n_cache_tokens = fm.get("total_cached_tokens", 0)
+            except Exception as exc:
+                import sys
+                print(f"Warning: trajectory parse failed: {exc}", file=sys.stderr)
 
 
-__all__ = ["AutoAgent"]
+# ===========================================================================
+# CONTAINER ENTRYPOINT — fixed harness, do not modify
+# ===========================================================================
+
+def _trajectory_to_atif(messages: list, result_msg: ResultMessage | None) -> dict:
+    """Convert SDK messages to ATIF trajectory dict."""
+    steps, step_id = [], 0
+    now = datetime.now(timezone.utc).isoformat()
+    pending: dict[str, ToolUseBlock] = {}
+
+    def _step(source, message, **kw):
+        nonlocal step_id; step_id += 1
+        s = {"step_id": step_id, "timestamp": now, "source": source, "message": message}
+        s.update({k: v for k, v in kw.items() if v is not None})
+        return s
+
+    for msg in messages:
+        if isinstance(msg, UserMessage):
+            if isinstance(msg.content, list):
+                all_tool_results = True
+                for b in msg.content:
+                    if isinstance(b, ToolResultBlock) and b.tool_use_id in pending:
+                        tu = pending.pop(b.tool_use_id)
+                        content = b.content if isinstance(b.content, str) else json.dumps(b.content) if b.content else ""
+                        steps.append(_step("agent", f"Tool: {tu.name}",
+                            tool_calls=[{"tool_call_id": tu.id, "function_name": tu.name, "arguments": tu.input}],
+                            observation={"results": [{"source_call_id": tu.id, "content": content}]}))
+                    else:
+                        all_tool_results = False
+                if all_tool_results:
+                    continue
+            text = msg.content if isinstance(msg.content, str) else str(msg.content)
+            if text:
+                steps.append(_step("user", text))
+        elif isinstance(msg, AssistantMessage):
+            texts, reasoning = [], None
+            for b in msg.content:
+                if isinstance(b, TextBlock): texts.append(b.text)
+                elif isinstance(b, ThinkingBlock): reasoning = b.thinking
+                elif isinstance(b, ToolUseBlock): pending[b.id] = b
+            if texts or reasoning:
+                steps.append(_step("agent", "\n".join(texts) or "(thinking)",
+                    reasoning_content=reasoning, model_name=msg.model))
+
+    for tu in pending.values():
+        steps.append(_step("agent", f"Tool: {tu.name}",
+            tool_calls=[{"tool_call_id": tu.id, "function_name": tu.name, "arguments": tu.input}]))
+
+    if not steps:
+        steps.append(_step("user", "(empty)"))
+
+    fm = None
+    if result_msg:
+        u = result_msg.usage or {}
+        fm = {"total_prompt_tokens": u.get("input_tokens"), "total_completion_tokens": u.get("output_tokens"),
+              "total_cached_tokens": u.get("cache_read_input_tokens"), "total_cost_usd": result_msg.total_cost_usd,
+              "total_steps": len(steps), "extra": {"duration_ms": result_msg.duration_ms, "num_turns": result_msg.num_turns}}
+
+    return {"schema_version": "ATIF-v1.6", "session_id": result_msg.session_id if result_msg else "unknown",
+            "agent": {"name": "autoagent", "version": "0.1.0", "model_name": MODEL}, "steps": steps, "final_metrics": fm}
+
+
+def _run_in_container():
+    """Container entrypoint — reads instruction, runs agent, writes ATIF trajectory."""
+    import sys
+    traj_dir = Path("/logs/agent")
+    traj_dir.mkdir(parents=True, exist_ok=True)
+
+    try:
+        instruction = open("/task/instruction.md").read().strip()
+    except FileNotFoundError:
+        print("FATAL: /task/instruction.md not found", file=sys.stderr)
+        fallback = {"schema_version": "ATIF-v1.6", "session_id": "error",
+                     "agent": {"name": "autoagent", "version": "0.1.0", "model_name": MODEL},
+                     "steps": [{"step_id": 1, "timestamp": datetime.now(timezone.utc).isoformat(),
+                                "source": "system", "message": "instruction file missing"}],
+                     "final_metrics": None}
+        (traj_dir / "trajectory.json").write_text(json.dumps(fallback, indent=2))
+        sys.exit(1)
+
+    async def _run():
+        opts = get_options()
+        trajectory, result_msg = [], None
+        async with ClaudeSDKClient(options=opts) as client:
+            await client.query(instruction)
+            async for msg in client.receive_response():
+                trajectory.append(msg)
+                if isinstance(msg, ResultMessage):
+                    result_msg = msg
+        if result_msg is None:
+            print("Warning: no ResultMessage received from SDK", file=sys.stderr)
+        return trajectory, result_msg
+
+    try:
+        trajectory, result_msg = asyncio.run(_run())
+    except Exception as exc:
+        print(f"FATAL: agent execution failed: {exc}", file=sys.stderr)
+        fallback = {"schema_version": "ATIF-v1.6", "session_id": "error",
+                     "agent": {"name": "autoagent", "version": "0.1.0", "model_name": MODEL},
+                     "steps": [{"step_id": 1, "timestamp": datetime.now(timezone.utc).isoformat(),
+                                "source": "system", "message": f"execution error: {exc}"}],
+                     "final_metrics": None}
+        (traj_dir / "trajectory.json").write_text(json.dumps(fallback, indent=2))
+        sys.exit(1)
+
+    atif = _trajectory_to_atif(trajectory, result_msg)
+    (traj_dir / "trajectory.json").write_text(json.dumps(atif, indent=2))
+
+    if result_msg:
+        print(f"cost_usd={result_msg.total_cost_usd or 0:.4f} turns={result_msg.num_turns} duration_ms={result_msg.duration_ms}")
+
+
+if __name__ == "__main__":
+    _run_in_container()

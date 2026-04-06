@@ -10,3 +10,6 @@ __pycache__
 *.py[oc]
 uv.lock
 .python-version
+agent-openai-backup.py
+agent-claude.py
+progress.png

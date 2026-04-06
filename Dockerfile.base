@@ -12,6 +12,8 @@ RUN uv pip install --system .
 
 # Agent code
 COPY agent.py ./
+COPY program.md ./
+COPY .agent/ ./.agent/
 
 RUN ln -sf $(which python3) /usr/local/bin/python
 RUN mkdir -p /logs /app/output

@@ -1,0 +1,48 @@
+[
+  {
+    "name": "Novus Epoxy Quebec",
+    "category": "flooring",
+    "contact": {"email": "info@novusepoxy.com", "phone": "581-307-2678"},
+    "address": {"street": "123 Rue Principale", "city": "Quebec City", "province": "QC", "postal": "G1K 2A1"},
+    "revenue": 450000,
+    "employees": 8
+  },
+  {
+    "name": "SCI Epoxy Montreal",
+    "category": "flooring",
+    "contact": {"email": "sales@sciepoxy.ca", "phone": "514-555-1234"},
+    "address": {"street": "456 Boul Saint-Laurent", "city": "Montreal", "province": "QC", "postal": "H2W 1Y5"},
+    "revenue": 1200000,
+    "employees": 25
+  },
+  {
+    "name": "Beton Surface Inc",
+    "category": "concrete",
+    "contact": {"email": "info@betonsurface.ca"},
+    "address": {"city": "Laval", "province": "QC"},
+    "revenue": 320000
+  },
+  {
+    "name": "Plancher Mirabel",
+    "category": "flooring",
+    "contact": {"phone": "450-555-9876"},
+    "address": {"street": "789 Chemin des Bois", "city": "Mirabel", "province": "QC", "postal": "J7J 1A1"},
+    "employees": 5
+  },
+  {
+    "name": "Garage Coatings Pro",
+    "category": "coatings",
+    "contact": {"email": "pro@garagecoatings.ca", "phone": "819-555-4321"},
+    "address": {"street": "321 Rue du Commerce", "city": "Sherbrooke", "province": "QC", "postal": "J1H 4A2"},
+    "revenue": 680000,
+    "employees": 12
+  },
+  {
+    "name": "Alliance Revetements",
+    "category": "flooring",
+    "contact": {"email": "contact@alliancerev.com"},
+    "address": {"city": "Gatineau", "province": "QC"},
+    "revenue": 890000,
+    "employees": 18
+  }
+]

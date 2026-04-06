@@ -1,0 +1,9 @@
+[task]
+name = "csv-lead-dedup"
+description = "Deduplicate CSV leads by email, sort, and produce summary stats"
+category = "data-processing"
+difficulty = "easy"
+
+[verifier]
+type = "script"
+command = "bash /task/tests/test.sh"

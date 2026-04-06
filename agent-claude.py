@@ -23,26 +23,40 @@ from claude_agent_sdk.types import (
 # AGENT CONFIG — meta-agent modifies this section
 # ===========================================================================
 
-SYSTEM_PROMPT = """You are a highly capable task-completion agent. You solve tasks by reading instructions, analyzing the problem, writing and executing code, and producing the required output files.
+SYSTEM_PROMPT = """You are an AGI-class autonomous agent with full system access. You solve ANY task thrown at you — coding, data engineering, scraping, API integration, database ops, file manipulation, network ops, system administration. You are relentless, creative, and never stop until the job is done perfectly.
 
-## Approach
-1. Read /task/instruction.md to understand what's required.
-2. Explore the working environment — check what files, tools, and libraries are available.
-3. Plan your approach, then execute step by step.
-4. Write output files to the exact paths specified in the instructions.
-5. Verify your output before finishing.
+## Core Protocol
+1. Read /task/instruction.md — understand the FULL scope, not just the surface.
+2. Deep-scan the environment — files, tools, packages, network, databases, APIs.
+3. THINK DEEPLY before acting. Use your extended thinking to plan multi-step strategies.
+4. Execute with surgical precision. Verify EVERY output.
+5. If something fails, diagnose the ROOT CAUSE, don't just retry blindly.
+6. Self-correct: re-read your own output, validate it matches requirements.
 
-## Key rules
-- Use python3 (not python) for running scripts.
-- Use Bash to run shell commands, install packages, inspect files.
-- For data analysis: pandas, numpy, openpyxl are available.
-- For file manipulation: use standard Python or shell tools.
-- Always verify output files exist and contain valid content before finishing.
-- If a task involves git repos, use git commands directly.
-- If a task involves databases, use sqlite3 CLI or Python sqlite3 module.
-- If a task involves images, use PIL/Pillow.
-- Read error messages carefully and fix issues iteratively.
-- Never give up — try multiple approaches if one fails.
+## Capabilities
+- Python 3 (pandas, numpy, openpyxl, requests, beautifulsoup4, sqlite3, PIL)
+- Shell/Bash — full system commands, package installation, process management
+- Git — clone, diff, commit, push, branch management
+- Databases — SQLite, PostgreSQL, MySQL via CLI or Python
+- Web — HTTP requests, API calls, scraping, data extraction
+- File I/O — read/write any format (JSON, CSV, YAML, XML, binary)
+- System — process management, cron, file permissions, networking
+
+## Self-Improvement Rules
+- After each task, analyze what worked and what didn't
+- Extract reusable patterns and store them in .agent/ workspace
+- Build compound tools from simple ones
+- Optimize for SPEED and ACCURACY simultaneously
+- When stuck, decompose the problem into smaller solvable pieces
+- Use parallel execution when tasks are independent
+- Cache intermediate results to avoid redundant computation
+
+## Quality Standard
+- NEVER submit partial work
+- ALWAYS verify outputs match expected format and content
+- Cross-validate results using multiple methods when possible
+- Handle edge cases explicitly
+- Clean up temporary files and resources
 """
 
 TOOLS_PRESET = {"type": "preset", "preset": "claude_code"}
@@ -54,15 +68,15 @@ HOOKS = None
 AGENT_CWD = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".agent")
 SETTING_SOURCES = ["project"]
 
-THINKING = {"type": "enabled", "budget_tokens": 10000}
-EFFORT = None
+THINKING = {"type": "enabled", "budget_tokens": 128000}
+EFFORT = "high"
 OUTPUT_FORMAT = None
-MODEL = "haiku"
-FALLBACK_MODEL = None
-MAX_TURNS = 30
-MAX_BUDGET_USD = None
+MODEL = "sonnet"
+FALLBACK_MODEL = "haiku"
+MAX_TURNS = 200
+MAX_BUDGET_USD = 10.0
 SANDBOX = None
-ENABLE_FILE_CHECKPOINTING = False
+ENABLE_FILE_CHECKPOINTING = True
 
 
 def get_options() -> ClaudeAgentOptions:
@@ -116,8 +130,10 @@ class AutoAgent(BaseAgent):
         instr_file.write_text(instruction)
         await environment.upload_file(source_path=instr_file, target_path="/task/instruction.md")
 
-        env = {"IS_SANDBOX": "1", **dotenv_values()}
-        env = {k: v for k, v in env.items() if v}
+        ALLOWED_ENV_KEYS = {"ANTHROPIC_API_KEY", "IS_SANDBOX", "MODEL", "FALLBACK_MODEL"}
+        raw_env = dotenv_values()
+        env = {"IS_SANDBOX": "1"}
+        env.update({k: v for k, v in raw_env.items() if k in ALLOWED_ENV_KEYS and v})
         env.update(self._extra_env)
 
         result = await environment.exec(
@@ -138,8 +154,9 @@ class AutoAgent(BaseAgent):
                 context.n_input_tokens = fm.get("total_prompt_tokens", 0)
                 context.n_output_tokens = fm.get("total_completion_tokens", 0)
                 context.n_cache_tokens = fm.get("total_cached_tokens", 0)
-            except Exception:
-                pass
+            except Exception as exc:
+                import sys
+                print(f"Warning: trajectory parse failed: {exc}", file=sys.stderr)
 
 
 # ===========================================================================
@@ -200,13 +217,27 @@ def _trajectory_to_atif(messages: list, result_msg: ResultMessage | None) -> dic
               "total_cached_tokens": u.get("cache_read_input_tokens"), "total_cost_usd": result_msg.total_cost_usd,
               "total_steps": len(steps), "extra": {"duration_ms": result_msg.duration_ms, "num_turns": result_msg.num_turns}}
 
-    return {"schema_version": "ATIF-v1.2", "session_id": result_msg.session_id if result_msg else "unknown",
+    return {"schema_version": "ATIF-v1.6", "session_id": result_msg.session_id if result_msg else "unknown",
             "agent": {"name": "autoagent", "version": "0.1.0", "model_name": MODEL}, "steps": steps, "final_metrics": fm}
 
 
 def _run_in_container():
     """Container entrypoint — reads instruction, runs agent, writes ATIF trajectory."""
-    instruction = open("/task/instruction.md").read().strip()
+    import sys
+    traj_dir = Path("/logs/agent")
+    traj_dir.mkdir(parents=True, exist_ok=True)
+
+    try:
+        instruction = open("/task/instruction.md").read().strip()
+    except FileNotFoundError:
+        print("FATAL: /task/instruction.md not found", file=sys.stderr)
+        fallback = {"schema_version": "ATIF-v1.6", "session_id": "error",
+                     "agent": {"name": "autoagent", "version": "0.1.0", "model_name": MODEL},
+                     "steps": [{"step_id": 1, "timestamp": datetime.now(timezone.utc).isoformat(),
+                                "source": "system", "message": "instruction file missing"}],
+                     "final_metrics": None}
+        (traj_dir / "trajectory.json").write_text(json.dumps(fallback, indent=2))
+        sys.exit(1)
 
     async def _run():
         opts = get_options()
@@ -217,13 +248,23 @@ def _run_in_container():
                 trajectory.append(msg)
                 if isinstance(msg, ResultMessage):
                     result_msg = msg
+        if result_msg is None:
+            print("Warning: no ResultMessage received from SDK", file=sys.stderr)
         return trajectory, result_msg
 
-    trajectory, result_msg = asyncio.run(_run())
+    try:
+        trajectory, result_msg = asyncio.run(_run())
+    except Exception as exc:
+        print(f"FATAL: agent execution failed: {exc}", file=sys.stderr)
+        fallback = {"schema_version": "ATIF-v1.6", "session_id": "error",
+                     "agent": {"name": "autoagent", "version": "0.1.0", "model_name": MODEL},
+                     "steps": [{"step_id": 1, "timestamp": datetime.now(timezone.utc).isoformat(),
+                                "source": "system", "message": f"execution error: {exc}"}],
+                     "final_metrics": None}
+        (traj_dir / "trajectory.json").write_text(json.dumps(fallback, indent=2))
+        sys.exit(1)
 
     atif = _trajectory_to_atif(trajectory, result_msg)
-    traj_dir = Path("/logs/agent")
-    traj_dir.mkdir(parents=True, exist_ok=True)
     (traj_dir / "trajectory.json").write_text(json.dumps(atif, indent=2))
 
     if result_msg:

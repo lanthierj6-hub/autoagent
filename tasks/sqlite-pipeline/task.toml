@@ -1,0 +1,9 @@
+[task]
+name = "sqlite-pipeline"
+description = "Create SQLite database from JSON, run analytics queries, produce summary"
+category = "database"
+difficulty = "medium"
+
+[verifier]
+type = "script"
+command = "bash /task/tests/test.sh"
