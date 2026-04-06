@@ -13,7 +13,7 @@ import asyncio, json
 from datetime import datetime, timezone
 from pathlib import Path
 
-from claude_agent_sdk import ClaudeSDKClient, ClaudeAgentOptions, ResultMessage, tool
+from claude_agent_sdk import ClaudeSDKClient, ClaudeAgentOptions, ResultMessage
 from claude_agent_sdk.types import (
     AssistantMessage, UserMessage, TextBlock, ThinkingBlock,
     ToolUseBlock, ToolResultBlock,
